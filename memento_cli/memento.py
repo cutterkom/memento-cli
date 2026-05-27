@@ -35,11 +35,12 @@ def get_mementos(timemap_url) -> list[Memento]:
     if resp.headers.get("content-type") == "application/link-format":
         for link in parse_links(resp.text):
             if link.get("rel") == "memento":
+                datetime_str = link["datetime"].strip(' "\n\r')
                 mementos.append(
                     Memento(
                         link["url"],
                         datetime.datetime.strptime(
-                            link["datetime"], "%a, %d %b %Y %H:%M:%S GMT"
+                            datetime_str, "%a, %d %b %Y %H:%M:%S GMT"
                         ),
                     )
                 )
